@@ -38,7 +38,7 @@ $app->group('/usuarios', function (RouteCollectorProxy $group) {
 });
 
 $app->get('[/]', function (Request $request, Response $response) {
-  $response->getBody()->write("Slim Framework 4 PHP GERONIMO BORDONE");
+  $response->getBody()->write("Slim Framework 4 PHP GERONIMO BORDONEE");
   return $response;
 });
 
