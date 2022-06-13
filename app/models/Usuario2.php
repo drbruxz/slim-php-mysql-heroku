@@ -37,7 +37,7 @@ class Usuario
         return $consulta->fetchObject('Usuario');
     }
 
-    public static function modificarUsuario()
+    public function modificarUsuario()
     {
         $objAccesoDato = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDato->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave WHERE id = :id");
@@ -46,6 +46,7 @@ class Usuario
         $consulta->bindValue(':id', $this->id, PDO::PARAM_INT);
         $consulta->execute();
     }
+
 
     public static function borrarUsuario($usuario)
     {

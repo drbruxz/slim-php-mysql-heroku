@@ -1,76 +1,89 @@
 <?php
-require_once './models/Usuario.php';
+require_once './models/Usuario2.php';
 require_once './interfaces/IApiUsable.php';
 
 class UsuarioController extends Usuario implements IApiUsable
 {
-    public function CargarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
+  public function CargarUno($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
 
-        $usuario = $parametros['usuario'];
-        $clave = $parametros['clave'];
+    $usuario = $parametros['usuario'];
+    $clave = $parametros['clave'];
 
-        // Creamos el usuario
-        $usr = new Usuario();
-        $usr->usuario = $usuario;
-        $usr->clave = $clave;
-        $usr->crearUsuario();
+    // Creamos el usuario
+    $usr = new Usuario();
+    $usr->usuario = $usuario;
+    $usr->clave = $clave;
+    $usr->crearUsuario();
 
-        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
+    $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-    public function TraerUno($request, $response, $args)
-    {
-        // Buscamos usuario por nombre
-        $usr = $args['usuario'];
-        $usuario = Usuario::obtenerUsuario($usr);
-        $payload = json_encode($usuario);
+  public function TraerUno($request, $response, $args)
+  {
+    // Buscamos usuario por nombre
+    echo 'traer uno';
+    $usr = $args['usuario'];
+    $usuario = Usuario::obtenerUsuario($usr);
+    $payload = json_encode($usuario);
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-    public function TraerTodos($request, $response, $args)
-    {
-        $lista = Usuario::obtenerTodos();
-        $payload = json_encode(array("listaUsuario" => $lista));
+  public function TraerUnoPorBody($request, $response, $args)
+  {
+    $requestBody = $request->getParsedBody();
+    $usrName = $requestBody['usuario'];
+    $usuario = Usuario::obtenerUsuario($usrName);
+    $payload = json_encode($usuario);
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
-    
-    public function ModificarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-        $nombre = $parametros['nombre'];
-        Usuario::modificarUsuario($nombre);
+  public function TraerTodos($request, $response, $args)
+  {
+    $lista = Usuario::obtenerTodos();
+    $payload = json_encode(array("listaUsuario" => $lista));
 
-        $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+  public function ModificarUno($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
 
-    public function BorrarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
+    $nombre = $parametros['nombre'];
+    Usuario::modificarUsuario($nombre);
 
-        $usuarioId = $parametros['usuarioId'];
-        Usuario::borrarUsuario($usuarioId);
+    $payload = json_encode(array("mensaje" => "Usuario modificado con exito"));
 
-        $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-    }
+  public function BorrarUno($request, $response, $args)
+  {
+    $parametros = $request->getParsedBody();
+
+    $usuarioId = $parametros['usuarioId'];
+    Usuario::borrarUsuario($usuarioId);
+
+    $payload = json_encode(array("mensaje" => "Usuario borrado con exito"));
+
+    $response->getBody()->write($payload);
+    return $response
+      ->withHeader('Content-Type', 'application/json');
+  }
 }
